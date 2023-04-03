@@ -23,3 +23,4 @@ class Expense:
     added_date: datetime = field(default_factory=datetime.now)
     comment: str = ''
     pk: int = 0
+
