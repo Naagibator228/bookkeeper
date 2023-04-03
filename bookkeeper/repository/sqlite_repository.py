@@ -26,7 +26,6 @@ class SQLiteRepository(AbstractRepository[T]):
         with sqlite3.connect(self.db_file) as con:
             cur = con.cursor()
             cur.execute("PRAGMA foreign_keys = ON")
-            print(f"INSERT INTO {self.table_name} ({names}) VALUES ({p})", values)
             cur.execute(f"INSERT INTO {self.table_name} ({names}) VALUES ({p})", values)
             obj.pk = cur.lastrowid
         con.close()
@@ -36,7 +35,6 @@ class SQLiteRepository(AbstractRepository[T]):
     def get(self, pk: int) -> T:
         with sqlite3.connect(self.db_file) as con:
             cur = con.cursor()
-            print(self.get_all())
             cur.execute(f"SELECT * FROM {self.table_name} WHERE pk=?", (pk,))
             result = cur.fetchone()
             if result is None:
@@ -62,7 +60,6 @@ class SQLiteRepository(AbstractRepository[T]):
             results = cur.fetchall()
             objects = []
             for result in results:
-                print(result)
                 obj_dict = dict(zip(self.fields.keys(), result[1:]))
                 obj_dict['pk'] = result[0]
                 objects.append(self.cls(**obj_dict))
